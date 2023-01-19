@@ -5,6 +5,7 @@ import './App.css'
 function App() {
   const count = useStore((state) => state.count)
   const increment = useStore((state) => state.increment)
+  const fetchLessons = useStore((state) => state.fetchLessons)
 
   return (
     <div className="App">
@@ -20,10 +21,15 @@ function App() {
       <div className="card">
         <button onClick={increment}>
           count is {count}
-        </button>
+        </button>        
         <p>
           Edit <code>src/App.tsx</code> and save to test HMR
         </p>
+      </div>
+      <div className="card">
+        <button onClick={fetchLessons}>
+          fetch lessons
+        </button>
       </div>
       <p className="read-the-docs">
         Click on the Vite and React logos to learn more
