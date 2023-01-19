@@ -1,10 +1,17 @@
+import { useState } from 'react'
 import { useStore, Lesson } from './state'
 import './App.css'
 
 function App() {
+  const [currentLesson, setCurrentLesson] = useState(0)
+  const [userInput, setUserInput] = useState('')
   const fetchLessons = useStore((state) => state.fetchLessons)
-  const nextLesson = useStore((state) => state.nextLesson)
-  const lesson: Lesson = useStore((state) => state.lessons[state.currentLesson])
+  const lesson: Lesson = useStore((state) => state.lessons[currentLesson])
+
+  const handleContinue = () => {
+    setCurrentLesson(currentLesson + 1)
+    setUserInput('')
+  }
 
   return (
     <div className="App">
@@ -25,9 +32,11 @@ function App() {
             })}
           </div>
           <div className="card">
-            <button onClick={nextLesson}>
-              Next Lesson 
-            </button>
+            {(!lesson.input || userInput !== '') && (
+              <button onClick={handleContinue}>
+                Continue 
+              </button>
+            )}
           </div>
         </>
       )}
