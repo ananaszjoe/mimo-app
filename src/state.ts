@@ -1,17 +1,22 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
+export type ContentBit = {
+  color?: string,
+  text?: string,
+  input?: boolean
+}
+
+export type Input = {
+  startIndex: number,
+  endIndex: number
+}
 export type Lesson = {
   id: number,
-  content: {
-    color: string,
-    text: string
-  }[],
-  input?: {
-    startIndex: number,
-    endIndex: number
-  }
+  content: ContentBit[],
+  input?: Input
 }
+
 
 export const useStore = create(
   persist(
