@@ -1,5 +1,13 @@
 # My attempt at Mimo Frontend Coding Challenge
 
+## How to test
+- I encourage you to go read the code - I added comments to explain certain things.
+- Install Node.js, clone the repository locally
+- Open a terminal and run (within the project root directory) $ npm i
+- Run $ npm run dev
+- Open the provided localhost URL and test the app
+- Also run the unit tests: $ npm test
+
 ## Stack
 - Vite to quickly set up a simple node.js React.js app scaffold
 - Zustand state management library for simple state management, without overkill. Used its persist middleware to save lesson and progress data
