@@ -8,3 +8,26 @@
 .card {
   padding: 2em;
 }
+
+.pending:after {
+  content: " ";
+  display: inline-block;
+  vertical-align: middle;
+  position: relative;
+  margin-left: 10px;
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  border-color: #fff transparent #fff transparent;
+  animation: rotate 1s linear infinite;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

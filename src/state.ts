@@ -26,10 +26,12 @@ export type LogPostType = {
 interface MimoAppState {
   lessons: LessonType[],
   log: Iterable<LogPostType>,
-  currentStartTime: number
+  currentStartTime: number,
+  pending: boolean,
   fetchLessons: () => Promise<void>,
   startTimer: () => Promise<void>,
   setCompleted: (id: number) => Promise<void>,
+  checkSolution: (solution: string) => Promise<boolean>
 }
 
 export const useStore = create<MimoAppState>()(
@@ -38,6 +40,7 @@ export const useStore = create<MimoAppState>()(
       lessons: [] as LessonType[],
       log: [] as Iterable<LogPostType>,
       currentStartTime: 0,
+      pending: false as boolean,
       fetchLessons: async () => {
         const response = await fetch('https://file-bzxjxfhcyh.now.sh/')
         const parsed = await response.json()
@@ -59,6 +62,23 @@ export const useStore = create<MimoAppState>()(
             completeTime: now.getTime()
           }]
         })
+      },
+      checkSolution: async (solution) => {
+        set({pending: true})
+
+        // I'd fetch backend validation, e.g. const response = await fetch('https://api.getmimo.com/v2/validate', {options})
+        // For now though, here's a mock async delay:
+        const mockDelay = new Promise(function(resolve) {
+          setTimeout(resolve, Math.random()*1500);
+        });
+        await mockDelay
+
+        set({pending: false})
+        
+        if(solution.trim() !== 'wrong') {
+          return true
+        }
+        return false
       }
     }),
     {
