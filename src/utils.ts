@@ -21,7 +21,7 @@ export const insertInput = (content: ContentBitType[], input: InputType | undefi
       }
       currentLength++
     })
-    result.push({color: piece.color, text: currentText})
+    if(!!currentText.length) result.push({color: piece.color, text: currentText})
   });
   return result
 }
