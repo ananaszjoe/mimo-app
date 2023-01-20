@@ -63,7 +63,7 @@ function App() {
 
           <div className="card">
             <button onClick={handleContinue} disabled={!!lesson.input && userInput == '' || pending} className={pending ? 'pending' : ''}>
-              {lesson.input ? 'Check solution' : 'Continue' }
+              {lesson.input ? 'Check solution' : 'Next' }
             </button>
             {message && <p>{message}</p>}
           </div>
