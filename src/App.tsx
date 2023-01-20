@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { useStore, Lesson, ContentBit, Input } from './state'
+import { useStore, LessonType, ContentBitType, InputType } from './state'
 import './App.css'
 
 function App() {
@@ -8,14 +8,15 @@ function App() {
   const [message, setMessage] = useState('')
   const [done, setDone] = useState(false)
   const fetchLessons = useStore((state) => state.fetchLessons)
-  const lesson: Lesson = useStore((state) => state.lessons[currentLesson])
+  const setCompleted = useStore((state) => state.setCompleted)
+  const lesson: LessonType = useStore((state) => state.lessons[currentLesson])
 
 
   // needs refactor
-  const insertInput = (content: ContentBit[], input: Input | undefined) => {
+  const insertInput = (content: ContentBitType[], input: InputType | undefined) => {
     if(!input) return content
     
-    var result: ContentBit[] = []
+    var result: ContentBitType[] = []
     let currentLength = 0
 
     content.forEach(piece => {
@@ -43,7 +44,9 @@ function App() {
       return
     } else if(currentLesson === (useStore.getState().lessons.length - 1)) { // reached the end of lessons
       setDone(true)
+      setCompleted(lesson.id)
     } else { // progress to next lesson
+      setCompleted(lesson.id)
       setCurrentLesson(currentLesson + 1)
     }
     setUserInput('')
