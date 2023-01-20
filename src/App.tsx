@@ -5,20 +5,11 @@ import './App.css'
 function App() {
   const [currentLesson, setCurrentLesson] = useState(0)
   const [userInput, setUserInput] = useState('')
+  const [message, setMessage] = useState('')
+  const [done, setDone] = useState(false)
   const fetchLessons = useStore((state) => state.fetchLessons)
   const lesson: Lesson = useStore((state) => state.lessons[currentLesson])
 
-  const handleContinue = () => {
-    setCurrentLesson(currentLesson + 1)
-    setUserInput('')
-  }
-
-  const Field = () => {
-    const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
-      setUserInput(e.currentTarget.value)
-    }
-    return <input type='text' value={userInput} onChange={handleChange} />
-  }
 
   // needs refactor
   const insertInput = (content: ContentBit[], input: Input | undefined) => {
@@ -44,38 +35,69 @@ function App() {
       result.push({color: piece.color, text: currentText})
     });
     return result
+  }
+  
+  const handleContinue = () => {
+    if(userInput === 'wrong') { // mock validation
+      setMessage(`The solution to the lesson is not "${userInput}"`)
+      return
+    } else if(currentLesson === (useStore.getState().lessons.length - 1)) { // reached the end of lessons
+      setDone(true)
+    } else { // progress to next lesson
+      setCurrentLesson(currentLesson + 1)
+    }
+    setUserInput('')
+    setMessage('')
+  }
+
+  const handleChange = (e: React.FormEvent<HTMLInputElement>) => {
+    setUserInput(e.currentTarget.value)
+  }
+
+  const handleRestart = () => {
+    setCurrentLesson(0)
+    setDone(false)
   }  
 
   return (
     <div className="App">
       <div className="card">
         {
-          !lesson && (
+          !lesson && !done && (
             <button onClick={fetchLessons}>
               Begin Exercises 
             </button>
           )
         }
       </div>
-      {lesson && (
+      {lesson && !done && (
         <>
           <div className="card">
             {insertInput(lesson.content, lesson.input).map((piece, index) => {
               
               if(piece.input) {
-                return <Field />
+                return <input type='text' value={userInput} onChange={handleChange} />
               }
               return <span style={{color: piece.color}}>{piece.text}</span>
             })}
           </div>
           <div className="card">
-            {(!lesson.input || userInput !== '') && (
-              <button onClick={handleContinue}>
-                Continue 
-              </button>
+            <button onClick={handleContinue} disabled={!!lesson.input && userInput == ''}>
+              {lesson.input ? 'Check solution' : 'Continue' }
+            </button>
+            {message && (
+              <p>{message}</p>
             )}
           </div>
         </>
+      )}
+      {done && (
+        <div className="card">
+          <p>Done</p>
+          <button onClick={handleRestart}>
+            Restart
+          </button>
+        </div>
       )}
     </div>
   )
